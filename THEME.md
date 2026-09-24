@@ -358,6 +358,27 @@ The list system is quite adequate
     }
 ```
 
+## Grid
+
+Setting `list-columns` above 1 draws a list as a grid of tiles instead of rows. Each tile shows the item's image above its name. Only `ports_list` (in the `ports_list` and `featured_ports` scenes) supplies images, other lists will draw tiles with just the name.
+
+```json
+    "ports_list": {
+        "list-columns": 3,            // number of columns, 1 (default) draws a normal list
+        "list-columns[wide]": 4,      // can be overridden like any other value
+        "item-size": 180,             // tile height, defaults to a 4:3 image plus one line of text
+        "item-spacer": 8,             // gap between tiles
+        "item-padding": 4,            // space between the tile edge and its image/name
+        "alt-fill": [ 38, 42, 51 ],   // color to fill unselected tiles
+        "select-fill": "accent",      // color to fill the selected tile
+        "roundness": 10,              // rounds the tiles, and the image corners when the tile has a fill
+        "line-height": 1.4,           // height of the name row, relative to the font
+        "autoscroll": "marquee",      // scroll the selected name if it is too long
+    }
+```
+
+In a grid LEFT/RIGHT move one tile, UP/DOWN move one row and L1/R1 move one page. The grid only scrolls when the selection moves off the visible rows.
+
 
 ## Special Words
 
@@ -553,6 +574,7 @@ The format is:
 - ports_list.total_ports
 - ports_list.filter_ports
 - ports_list.filters
+- ports_list.position
 
 ## Featured Ports tags
 
