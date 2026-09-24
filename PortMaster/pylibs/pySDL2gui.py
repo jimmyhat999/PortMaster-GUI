@@ -2604,12 +2604,15 @@ class Region:
                 fill = self.alt_fill
 
             if fill is not None:
-                if self.roundness and sdlgfx:
-                    sdlgfx.roundedBoxRGBA(self.renderer.sdlrenderer,
-                        tile.x, tile.y, tile.right, tile.bottom,
-                        self.roundness, *fill)
-                else:
-                    self.renderer.fill(tile.sdl(), fill)
+                # Didn't use sdlgfx as not every device ships with it.
+                radius = min(self.roundness, tile.width // 2, tile.height // 2)
+                rows = [(tile.x, tile.y + radius, tile.width, tile.height - radius * 2)]
+                for row, cut in enumerate(self._corner_cuts(radius)):
+                    rows += [
+                        (tile.x + cut, tile.y + row, tile.width - cut * 2, 1),
+                        (tile.x + cut, tile.bottom - row - 1, tile.width - cut * 2, 1)]
+
+                self.renderer.fill(rows, fill)
 
             inner = tile.inflated(-self.item_padding * 2)
             image_area = Rect(inner.x, inner.y, inner.width, inner.height - label_h)
@@ -2628,8 +2631,7 @@ class Region:
                     # Round the image by painting over its corners in the tile colour.
                     radius = min(self.roundness, dest.width // 2, dest.height // 2)
                     corners = []
-                    for row in range(radius):
-                        cut = radius - int((radius ** 2 - (radius - row - 0.5) ** 2) ** 0.5)
+                    for row, cut in enumerate(self._corner_cuts(radius)):
                         top, bottom = dest.y + row, dest.bottom - row - 1
                         left, right = dest.x, dest.right - cut
                         corners += [
@@ -2666,6 +2668,14 @@ class Region:
 
             with texture.with_color_mod(color):
                 texture.draw_in(label_area, clip=True)
+
+    def _corner_cuts(self, radius):
+        '''
+        How far each row of a rounded corner is cut in, top row first. Used internally
+        '''
+        return [
+            radius - int((radius ** 2 - (radius - row - 0.5) ** 2) ** 0.5)
+            for row in range(radius)]
 
     def _update_grid(self):
         '''
