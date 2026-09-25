@@ -2107,7 +2107,7 @@ class Region:
         self.item_spacer = self._verify_int('item-spacer', 0, optional=True)
         self.item_padding = self._verify_int('item-padding', 4, optional=True, minimum=0)
 
-        self.list_columns = self._verify_int('list-columns', 1, minimum=1)
+        self.list_columns = self._verify_int('list-columns', 1, minimum=1, maximum=6)
         self.list_image = None
         self.grid_start_row = 0
 

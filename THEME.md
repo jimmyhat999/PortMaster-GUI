@@ -364,7 +364,7 @@ Setting `list-columns` above 1 draws a list as a grid of tiles instead of rows. 
 
 ```json
     "ports_list": {
-        "list-columns": 3,            // number of columns, 1 (default) draws a normal list
+        "list-columns": 3,            // number of columns (max 6) anything over will limit to 6, 1 (default) draws a normal list
         "list-columns[wide]": 4,      // can be overridden like any other value
         "item-size": 180,             // tile height, defaults to a 4:3 image plus one line of text
         "item-spacer": 8,             // gap between tiles
@@ -378,6 +378,8 @@ Setting `list-columns` above 1 draws a list as a grid of tiles instead of rows. 
 ```
 
 In a grid LEFT/RIGHT move one tile, UP/DOWN move one row and L1/R1 move one page. The grid only scrolls when the selection moves off the visible rows.
+
+**Note:** keep the grid to 30 visible tiles or fewer (columns x rows). Only 30 images are kept loaded, so a bigger grid has to reload its images from the SD card on every redraw, which is very slow. The number of rows depends on the tile height (`item-size`) and the screen size.
 
 **Note:** only 30 images are kept loaded, and the grid loads a new one for every tile it shows, so scrolling quickly unloads older images. Any image a theme uses on its scenes (panels, icons, backgrounds) that is not listed in `#resources` can be unloaded while it is still on screen, which crashes PortMaster. List every static image in `#resources` so it is never unloaded:
 
