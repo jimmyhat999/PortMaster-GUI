@@ -379,6 +379,15 @@ Setting `list-columns` above 1 draws a list as a grid of tiles instead of rows. 
 
 In a grid LEFT/RIGHT move one tile, UP/DOWN move one row and L1/R1 move one page. The grid only scrolls when the selection moves off the visible rows.
 
+**Note:** only 30 images are kept loaded, and the grid loads a new one for every tile it shows, so scrolling quickly unloads older images. Any image a theme uses on its scenes (panels, icons, backgrounds) that is not listed in `#resources` can be unloaded while it is still on screen, which crashes PortMaster. List every static image in `#resources` so it is never unloaded:
+
+```json
+    "#resources": {
+        "panel.png": {},
+        "menu_icon.png": {}
+    }
+```
+
 
 ## Special Words
 
